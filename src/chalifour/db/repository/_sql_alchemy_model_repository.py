@@ -1,5 +1,5 @@
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.orm import sessionmaker, declarative_base, Mapped, mapped_column
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.exc import IntegrityError
 from typing import Type, Any, Dict, List, Optional, TypeVar
 import os
@@ -29,7 +29,6 @@ class SQLAlchemyModelRepository(ModelRepository[T]):
         Initialize the SQLAlchemy model manager.
 
         Args:
-            db_uri: Database connection URI (e.g., 'sqlite:///database.db')
             model_class: The SQLAlchemy model class this manager will operate on
                          (must be a subclass of the declarative Base)
 

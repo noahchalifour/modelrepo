@@ -33,15 +33,15 @@ class MongoDBModelRepository(ModelRepository[T]):
         """
         super().__init__(model_class)
 
-        connection_string = os.environ.get("MONGODB_CONNECTION_STRING", "")
+        connection_string = os.environ.get(
+            "MONGODB_CONNECTION_STRING", "mongodb://localhost:27017/"
+        )
         db_name = os.environ.get("MONGODB_DATABASE_NAME", "database")
         collection_name = model_class.__name__
 
         self.client = MongoClient(connection_string)
         self.db = self.client[db_name]
         self.collection = self.db[collection_name]
-        # Ensure unique email index for consistency if email is a common field
-        self.collection.create_index("email", unique=True, background=True)
 
     def _wrap_result(self, data: Optional[Dict[str, Any]]) -> Optional[T]:
         """
