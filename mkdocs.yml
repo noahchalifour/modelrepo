@@ -1,0 +1,15 @@
+site_name: "My Library"
+
+theme:
+  name: "material"
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths:
+            - src
+  - api-autonav:
+      modules:
+        - src/chalifour

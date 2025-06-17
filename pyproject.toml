@@ -1,0 +1,22 @@
+# pyproject.toml for chalifour-db-repo
+[tool.poetry]
+name = "chalifour-db" # The distribution name users will install (e.g., pip install chalifour-db)
+version = "0.1.0"
+description = "Database components for the Chalifour project."
+authors = ["Noah Chalifour <chalifournoah@gmail.com>"]
+readme = "README.md"
+packages = [{include = "src"}] # Poetry will find the 'chalifour' directory and its contents
+
+[tool.poetry.dependencies]
+python = "^3.9"
+sqlalchemy = "^2.0"
+pymongo = "^4.13"
+bson = "^0.5"
+dependency-injector = "^4.48"
+mkdocstrings = { version = ">=0.18", extras = ["python"] }
+mkdocs-material = "^9.6"
+mkdocs-api-autonav = "^0.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
