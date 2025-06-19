@@ -56,6 +56,7 @@ coverage.xml # Used by pytest-cov for GitLab CI
 *.cover
 *.py,cover
 .hypothesis/
+report.xml
 
 # PyInstaller
 *.manifest
