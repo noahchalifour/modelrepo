@@ -2,7 +2,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.exc import IntegrityError
 from typing import Type, Any, Dict, List, Optional, TypeVar
-import os
 
 from ._model_repository import ModelRepository
 
@@ -24,11 +23,12 @@ class SQLAlchemyModelRepository(ModelRepository[T]):
         Session: SQLAlchemy sessionmaker factory for creating new sessions
     """
 
-    def __init__(self, model_class: Type[T]):
+    def __init__(self, db_uri: str, model_class: Type[T]):
         """
         Initialize the SQLAlchemy model manager.
 
         Args:
+            db_uri: URI connection string for database
             model_class: The SQLAlchemy model class this manager will operate on
                          (must be a subclass of the declarative Base)
 
@@ -37,8 +37,6 @@ class SQLAlchemyModelRepository(ModelRepository[T]):
             if they don't already exist.
         """
         super().__init__(model_class)
-
-        db_uri = os.environ.get("SQL_ALCHEMY_DB_URI", "sqlite:///database.sqlite3")
 
         self.engine = create_engine(db_uri)
         Base.metadata.create_all(self.engine)  # Ensure table exists for this model

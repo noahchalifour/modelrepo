@@ -24,22 +24,20 @@ class MongoDBModelRepository(ModelRepository[T]):
         model_class: Class used to wrap raw MongoDB documents
     """
 
-    def __init__(self, model_class: Type[T]):
+    def __init__(self, db_uri: str, db_name: str, model_class: Type[T]):
         """
         Initialize a MongoDB model manager.
 
         Args:
+            db_uri: URI connection string for database
+            db_name: Name of the MongoDB database
             model_class: Class to wrap returned documents (provides object-oriented access)
         """
         super().__init__(model_class)
 
-        connection_string = os.environ.get(
-            "MONGODB_CONNECTION_STRING", "mongodb://localhost:27017/"
-        )
-        db_name = os.environ.get("MONGODB_DATABASE_NAME", "database")
         collection_name = model_class.__name__
 
-        self.client = MongoClient(connection_string)
+        self.client = MongoClient(db_uri)
         self.db = self.client[db_name]
         self.collection = self.db[collection_name]
 

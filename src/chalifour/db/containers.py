@@ -10,7 +10,7 @@ patterns for better testability and modularity.
 from dependency_injector import containers, providers
 
 from .registry import ModelRepositoryRegistry
-from .repository._helpers import get_repository_class_from_path
+from .repository._helpers import get_repository_factory
 
 
 class ModelRegistryContainer(containers.DeclarativeContainer):
@@ -24,10 +24,8 @@ class ModelRegistryContainer(containers.DeclarativeContainer):
     Attributes:
         config: Configuration provider for container settings
         wiring_config: Configuration for dependency injection wiring
-        model_repository_class: Provider that dynamically loads the repository class
         model_repository_factory: Factory provider for creating repository instances
         registry: Singleton provider for the ModelRepositoryRegistry
-        register_models: Provider that triggers registration of deferred models
     """
 
     config = providers.Configuration()
@@ -37,12 +35,12 @@ class ModelRegistryContainer(containers.DeclarativeContainer):
         ],
     )
 
-    model_repository_class = providers.Callable(
-        get_repository_class_from_path,
-        class_path=config.class_path,
+    model_repository_factory = providers.Factory(
+        providers.Callable(
+            get_repository_factory,
+            cfg=config,
+        )
     )
-
-    model_repository_factory = providers.Factory(model_repository_class)
 
     registry = providers.Singleton(
         ModelRepositoryRegistry,

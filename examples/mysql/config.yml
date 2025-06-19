@@ -1,0 +1,4 @@
+model_repository:
+  class_path: chalifour.db.repository.SQLAlchemyModelRepository
+
+  db_uri: sqlite:///database.sqlite3

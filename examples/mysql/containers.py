@@ -4,7 +4,7 @@ from chalifour.db.containers import ModelRegistryContainer
 
 
 class ApplicationContainer(containers.DeclarativeContainer):
-    config = providers.Configuration(ini_files=["./config.ini"])
+    config = providers.Configuration(yaml_files=["./config.yml"])
     wiring_config = containers.WiringConfiguration(
         modules=[
             "__main__",

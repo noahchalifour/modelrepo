@@ -6,14 +6,15 @@ repository classes in the chalifour.db package.
 """
 
 from typing import Type
+from dependency_injector.providers import Configuration
 import importlib
 
 from ._model_repository import ModelRepository
 
 
-def get_repository_class_from_path(class_path: str) -> Type[ModelRepository]:
+def get_repository_factory(cfg: Configuration) -> Type[ModelRepository]:
     """
-    Dynamically import and return a ModelRepository class from a fully qualified path.
+    Dynamically import and return a ModelRepository factory from a fully qualified path.
 
     This function allows for dynamic loading of repository implementations based on
     configuration, enabling flexible repository selection without hard-coded dependencies.
@@ -23,23 +24,25 @@ def get_repository_class_from_path(class_path: str) -> Type[ModelRepository]:
                    (e.g., "chalifour.db.repository.MongoDBModelRepository")
 
     Returns:
-        The ModelRepository class referenced by the path
+        The factory to create the ModelRepository referenced by the path
 
     Raises:
         ImportError: If the module cannot be imported
         AttributeError: If the class does not exist in the specified module
 
     Example:
-        >>> repo_class = get_repository_class_from_path("chalifour.db.repository.MongoDBModelRepository")
-        >>> repo_instance = repo_class(model_type=MyModel)
+        >>> repo_factory = get_repository_factory(config)
+        >>> repo_instance = repo_factory(model_type=MyModel)
     """
+    class_path = cfg.get("class_path")
+
     print("Using model repository class:", class_path)
 
     try:
         module_name, class_name = class_path.rsplit(".", 1)
         module = importlib.import_module(module_name)
         my_class = getattr(module, class_name)
-        return my_class
+        return my_class.get_repository_factory(cfg)
     except (ImportError, AttributeError) as e:
         print(f"Error importing class '{class_path}': {e}")
         raise

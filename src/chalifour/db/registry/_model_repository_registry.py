@@ -52,19 +52,15 @@ class ModelRepositoryRegistry:
         are available.
 
         Raises:
-            TypeError: If there's an error instantiating a repository for a model
-            Exception: For any other unexpected errors during registration
+            Exception: For any errors during registration
         """
         # We ensure this runs *after* the container is fully initialized
         for model_cls in _deferred_registered_models:
             try:
                 self.register_model(model_cls)
-            except TypeError as e:
-                print(f"Error instantiating repository for {model_cls.__name__}: {e}")
-                raise
             except Exception as e:
                 print(
-                    f"Unexpected error during repository registration for {model_cls.__name__}: {e}"
+                    f"Error during repository registration for {model_cls.__name__}: {e}"
                 )
                 raise
 
