@@ -4,7 +4,7 @@ default:
     - python --version
     - pip install poetry # Install Poetry in the CI environment
     - poetry config virtualenvs.in-project true # Create virtualenv in project directory
-    - poetry install --no-dev # Install production dependencies first (optional, but good practice)
+    - poetry install --without dev # Install production dependencies first (optional, but good practice)
     - poetry install --with dev # Install dev dependencies (including pytest-cov)
 
 stages:
