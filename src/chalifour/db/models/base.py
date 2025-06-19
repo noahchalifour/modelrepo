@@ -44,6 +44,24 @@ class MongoDBModel:
 
     _id: str
 
+    def __init__(self, id=None, _id=None):
+        """
+        Initialize a MongoDB model with an ID.
+
+        This constructor allows creating a model with either 'id' or '_id',
+        prioritizing 'id' if both are provided. This makes the API more
+        flexible and consistent with other model types.
+
+        Args:
+            id (str, optional): The document identifier to use. Defaults to None.
+            _id (str, optional): Alternative way to specify the document identifier.
+                                Used if 'id' is not provided. Defaults to None.
+        """
+        if id is not None:
+            self._id = id
+        elif _id is not None:
+            self._id = _id
+
     @property
     def id(self):
         """

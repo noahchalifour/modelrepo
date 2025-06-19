@@ -42,7 +42,7 @@ env/
 # Environments (for environment variables, secrets)
 .env
 .flaskenv
-.venv_local/ # Common for local development environments
+.venv_local/
 
 # Unit test / coverage reports
 .coverage
@@ -52,7 +52,7 @@ htmlcov/
 .tox/
 .nox/
 nosetests.xml
-coverage.xml # Used by pytest-cov for GitLab CI
+coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
@@ -93,8 +93,8 @@ Desktop.ini
 *.tmp
 *.swp
 *.bak
-*.sqlite3 # Common for local SQLite databases
-!db.sqlite3 # Example: If you explicitly want to track a specific sqlite3 file
+*.sqlite3
+!db.sqlite3
 # /tmp/ # General temporary directory
 
 # Data files (if they are generated or sensitive and not part of the repo)
