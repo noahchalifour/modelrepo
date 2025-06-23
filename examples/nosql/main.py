@@ -1,5 +1,5 @@
 from dependency_injector.wiring import inject, Provide
-from chalifour.db.registry import ModelRepositoryRegistry
+from modelrepo.registry import ModelRepositoryRegistry
 
 from containers import ApplicationContainer
 from models import User

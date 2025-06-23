@@ -1,6 +1,6 @@
 from dependency_injector import containers, providers
 
-from chalifour.db.containers import ModelRegistryContainer
+from modelrepo.containers import ModelRegistryContainer
 
 
 class ApplicationContainer(containers.DeclarativeContainer):

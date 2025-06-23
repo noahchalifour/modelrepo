@@ -12,4 +12,4 @@ plugins:
             - src
   - api-autonav:
       modules:
-        - src/chalifour
+        - src/modelrepo

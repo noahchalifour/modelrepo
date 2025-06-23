@@ -1,11 +1,11 @@
-# pyproject.toml for chalifour-db-repo
+# pyproject.toml for modelrepo
 [tool.poetry]
-name = "chalifour-db" # The distribution name users will install (e.g., pip install chalifour-db)
+name = "modelrepo" # The distribution name users will install (e.g., pip install modelrepo)
 version = "0.1.0"
-description = "Database components for the Chalifour project."
+description = "Python package for interacting with databases using model repositories."
 authors = ["Noah Chalifour <chalifournoah@gmail.com>"]
 readme = "README.md"
-packages = [{include = "chalifour", from = "src"}] # Poetry will find the 'chalifour' directory and its contents
+packages = [{include = "src/modelrepo"}] # Poetry will find the 'modelrepo' directory and its contents
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -23,6 +23,12 @@ pytest-cov = "^6.2.1"
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
+
+[tool.coverage.report]
+exclude_also = [
+    # Exclude abstract methods
+    "@(abc\\.)?abstractmethod",
+]
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,5 +1,5 @@
-from chalifour.db.registry import registered_model
-from chalifour.db.models.base import MongoDBModel
+from modelrepo.registry import registered_model
+from modelrepo.models.base import MongoDBModel
 
 from dataclasses import dataclass
 
