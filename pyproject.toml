@@ -5,7 +5,7 @@ version = "0.1.0"
 description = "Python package for interacting with databases using model repositories."
 authors = ["Noah Chalifour <chalifournoah@gmail.com>"]
 readme = "README.md"
-packages = [{include = "src/modelrepo"}] # Poetry will find the 'modelrepo' directory and its contents
+packages = [{include = "modelrepo", from = "src"}] # Poetry will find the 'modelrepo' directory and its contents
 
 [tool.poetry.dependencies]
 python = "^3.9"
