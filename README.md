@@ -1,9 +1,8 @@
 # ModelRepo
 
 [![PyPI version](https://badge.fury.io/py/modelrepo.svg)](https://badge.fury.io/py/modelrepo)
-[![Build Status](https://gitlab.com/path-to-your-project/badges/main/pipeline.svg)](https://gitlab.com/path-to-your-project/-/commits/main)
-[![Documentation Status](https://readthedocs.org/projects/modelrepo/badge/?version=latest)](https://modelrepo.readthedocs.io/en/latest/?badge=latest)
-[![Coverage](https://gitlab.com/path-to-your-project/badges/main/coverage.svg)](https://gitlab.com/path-to-your-project/-/commits/main)
+[![Build Status](https://gitlab.chalifour.dev/noahchalifour/modelrepo/badges/main/pipeline.svg)](https://gitlab.chalifour.dev/noahchalifour/modelrepo/-/commits/main)
+[![Coverage](https://gitlab.chalifour.dev/noahchalifour/modelrepo/badges/main/coverage.svg)](https://gitlab.chalifour.dev/noahchalifour/modelrepo/-/commits/main)
 [![Python Versions](https://img.shields.io/pypi/pyversions/modelrepo.svg)](https://pypi.org/project/modelrepo/)
 [![License](https://img.shields.io/pypi/l/modelrepo.svg)](https://pypi.org/project/modelrepo/)
 
@@ -59,6 +58,10 @@ if __name__ == "__main__":
 
 For more examples, see the [examples directory](examples/).
 
+## Documentation
+
+Documentation for the package can be found at <https://noahchalifour.github.io/modelrepo/reference/modelrepo/>
+
 ## Development
 
 ### Setup Development Environment
@@ -69,7 +72,7 @@ git clone https://gitlab.chalifour.dev/noahchalifour/modelrepo.git
 cd modelrepo
 
 # Install development dependencies
-pip install -e ".[dev]"
+pip install e ".[dev]"
 ```
 
 ### Running Tests
@@ -83,7 +86,6 @@ With coverage:
 ```bash
 pytest --cov=src
 ```
-
 
 ## Contributing
 
@@ -104,5 +106,3 @@ This project is licensed under the [MIT License](LICENSE).
 ## Contact
 
 For questions and support, please open an issue on the GitLab repository.
-
-
