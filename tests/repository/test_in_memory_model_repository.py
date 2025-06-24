@@ -16,6 +16,7 @@ from modelrepo.repository._in_memory_model_repository import InMemoryModelReposi
 
 class MockModel:
     """Mock model class for testing purposes."""
+
     def __init__(self, id: str = None, name: str = "test", value: int = 0):
         self.id = id or str(uuid4())
         self.name = name
@@ -24,7 +25,11 @@ class MockModel:
     def __eq__(self, other):
         if not isinstance(other, MockModel):
             return False
-        return self.id == other.id and self.name == other.name and self.value == other.value
+        return (
+            self.id == other.id
+            and self.name == other.name
+            and self.value == other.value
+        )
 
 
 @pytest.fixture
@@ -62,11 +67,9 @@ def test_create_model(repository):
     and assigns a UUID if no ID is provided, returning the created model.
     """
     model_data = {"name": "Test User", "value": 42}
-    model = MockModel(**model_data)
-    
-    result = repository.create(model)
-    
-    assert result == model
+
+    result = repository.create(model_data)
+
     assert result.id is not None  # Should have an ID assigned
     assert result.name == "Test User"
     assert result.value == 42
@@ -80,31 +83,12 @@ def test_create_model_with_existing_id(repository):
     This test verifies that when a model already has an ID, the create
     method uses that ID instead of generating a new one.
     """
-    model = MockModel(id="existing_id", name="Test", value=1)
-    
-    result = repository.create(model)
-    
-    assert result == model
+    model_data = {"id": "existing_id", "name": "Test", "value": 1}
+
+    result = repository.create(model_data)
+
     assert result.id == "existing_id"
-    assert repository._storage["existing_id"] == model
-
-
-def test_create_model_without_id_generates_uuid(repository):
-    """
-    Test that creating a model without an ID generates a UUID.
-
-    This test verifies that the create method automatically assigns
-    a UUID to models that don't have an ID set.
-    """
-    model = MockModel(name="No ID Test")
-    original_id = model.id
-    model.id = None  # Remove the auto-generated ID
-    
-    result = repository.create(model)
-    
-    assert result.id is not None
-    assert result.id != original_id  # Should be a new UUID
-    assert len(result.id) > 0  # Should have some ID
+    assert repository._storage["existing_id"] == MockModel(**model_data)
 
 
 def test_get_by_id_existing(repository, sample_models):
@@ -116,9 +100,9 @@ def test_get_by_id_existing(repository, sample_models):
     """
     model = sample_models[0]
     repository._storage[model.id] = model
-    
+
     result = repository.get_by_id(model.id)
-    
+
     assert result == model
 
 
@@ -130,7 +114,7 @@ def test_get_by_id_nonexistent(repository):
     to retrieve a model that doesn't exist in the repository.
     """
     result = repository.get_by_id("nonexistent_id")
-    
+
     assert result is None
 
 
@@ -143,9 +127,9 @@ def test_find_one_matching(repository, sample_models):
     """
     for model in sample_models:
         repository._storage[model.id] = model
-    
+
     result = repository.find_one({"name": "Bob"})
-    
+
     assert result == sample_models[1]  # Bob is the second model
 
 
@@ -158,9 +142,9 @@ def test_find_one_no_match(repository, sample_models):
     """
     for model in sample_models:
         repository._storage[model.id] = model
-    
+
     result = repository.find_one({"name": "David"})
-    
+
     assert result is None
 
 
@@ -173,9 +157,9 @@ def test_find_one_multiple_criteria(repository, sample_models):
     """
     for model in sample_models:
         repository._storage[model.id] = model
-    
+
     result = repository.find_one({"name": "Alice", "value": 100})
-    
+
     assert result == sample_models[0]
 
 
@@ -188,9 +172,9 @@ def test_find_all_no_query(repository, sample_models):
     """
     for model in sample_models:
         repository._storage[model.id] = model
-    
+
     results = repository.find_all()
-    
+
     assert len(results) == 3
     assert all(model in results for model in sample_models)
 
@@ -206,9 +190,9 @@ def test_find_all_with_query(repository, sample_models):
     sample_models[2].value = 100  # Charlie now has same value as Alice
     for model in sample_models:
         repository._storage[model.id] = model
-    
+
     results = repository.find_all({"value": 100})
-    
+
     assert len(results) == 2
     assert sample_models[0] in results  # Alice
     assert sample_models[2] in results  # Charlie
@@ -223,9 +207,9 @@ def test_find_all_with_limit(repository, sample_models):
     """
     for model in sample_models:
         repository._storage[model.id] = model
-    
+
     results = repository.find_all(limit=2)
-    
+
     assert len(results) == 2
 
 
@@ -238,9 +222,9 @@ def test_find_all_with_skip(repository, sample_models):
     """
     for model in sample_models:
         repository._storage[model.id] = model
-    
+
     results = repository.find_all(skip=1)
-    
+
     assert len(results) == 2  # Should skip first result
 
 
@@ -253,9 +237,9 @@ def test_find_all_with_limit_and_skip(repository, sample_models):
     """
     for model in sample_models:
         repository._storage[model.id] = model
-    
+
     results = repository.find_all(skip=1, limit=1)
-    
+
     assert len(results) == 1
 
 
@@ -268,10 +252,10 @@ def test_update_existing_model(repository, sample_models):
     """
     model = sample_models[0]
     repository._storage[model.id] = model
-    
+
     update_data = {"name": "Updated Alice", "value": 999}
     result = repository.update(model.id, update_data)
-    
+
     assert result is not None
     assert result.name == "Updated Alice"
     assert result.value == 999
@@ -298,9 +282,9 @@ def test_delete_existing_model(repository, sample_models):
     """
     model = sample_models[0]
     repository._storage[model.id] = model
-    
+
     result = repository.delete(model.id)
-    
+
     assert result is True
     assert model.id not in repository._storage
 
@@ -325,9 +309,9 @@ def test_count_all_models(repository, sample_models):
     """
     for model in sample_models:
         repository._storage[model.id] = model
-    
+
     result = repository.count()
-    
+
     assert result == 3
 
 
@@ -342,9 +326,9 @@ def test_count_with_query(repository, sample_models):
     sample_models[1].value = 100  # Bob now has same value as Alice
     for model in sample_models:
         repository._storage[model.id] = model
-    
+
     result = repository.count({"value": 100})
-    
+
     assert result == 2
 
 
@@ -357,9 +341,9 @@ def test_clear_repository(repository, sample_models):
     """
     for model in sample_models:
         repository._storage[model.id] = model
-    
+
     repository.clear()
-    
+
     assert len(repository._storage) == 0
     assert repository.count() == 0
 
@@ -373,9 +357,9 @@ def test_find_all_with_nonexistent_attribute(repository):
     """
     model = MockModel(id="1", name="Test")
     repository._storage[model.id] = model
-    
+
     results = repository.find_all({"nonexistent_attr": "value"})
-    
+
     assert len(results) == 0
 
 
@@ -388,10 +372,8 @@ def test_repository_isolation(repository):
     """
     repository1 = InMemoryModelRepository(MockModel)
     repository2 = InMemoryModelRepository(MockModel)
-    
-    model = MockModel(id="1", name="Test")
-    repository1.create(model)
-    
+
+    repository1.create({"id": "1", "name": "Test"})
+
     assert len(repository1._storage) == 1
     assert len(repository2._storage) == 0
-

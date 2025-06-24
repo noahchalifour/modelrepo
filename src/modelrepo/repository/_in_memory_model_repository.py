@@ -120,7 +120,7 @@ class InMemoryModelRepository(ModelRepository[T]):
             The created model with its ID
         """
         # Assign an ID if not present
-        if not model_data.get("id") or not model_data.get("_id"):
+        if not model_data.get("id") and not model_data.get("_id"):
             model_data["id"] = str(uuid4())
 
         model_id = model_data["id"]
