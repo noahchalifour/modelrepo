@@ -32,6 +32,11 @@ test:
 build:
   stage: build
   script:
+    # Extract version from git tag (remove 'v' prefix) if tag exists
+    - if [ -n "$CI_COMMIT_TAG" ]; then export VERSION=${CI_COMMIT_TAG#v}; fi
+    # Update version in pyproject.toml if tag exists
+    - if [ -n "$CI_COMMIT_TAG" ]; then poetry version $VERSION; fi
+    # Build the package
     - poetry build
   artifacts:
     paths:
