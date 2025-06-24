@@ -1,10 +1,8 @@
-from modelrepo.registry import registered_model
 from modelrepo.models.base import SQLModel
 
 from sqlalchemy import String, Column
 
 
-@registered_model
 class User(SQLModel):
     __tablename__ = "users"
 

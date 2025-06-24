@@ -6,13 +6,13 @@ interface that can be used in tests without requiring an actual database connect
 It stores models in memory and simulates basic CRUD operations.
 """
 
-from typing import Dict, List, Optional, Any, Type
+from typing import Dict, List, Optional, Any, Type, TypeVar
 from uuid import uuid4
 
 from ._model_repository import ModelRepository
 
 
-T = Dict[str, Any]
+T = TypeVar("T")
 
 
 class InMemoryModelRepository(ModelRepository[T]):
@@ -28,7 +28,7 @@ class InMemoryModelRepository(ModelRepository[T]):
         _storage (Dict[str, T]): In-memory storage for models
     """
 
-    def __init__(self, model_class: Type[Any]) -> None:
+    def __init__(self, model_class: Type[T]) -> None:
         """
         Initialize an empty in-memory storage for models.
 
@@ -120,12 +120,13 @@ class InMemoryModelRepository(ModelRepository[T]):
             The created model with its ID
         """
         # Assign an ID if not present
-        if not hasattr(model_data, "id") or not getattr(model_data, "id"):
-            setattr(model_data, "id", str(uuid4()))
+        if not model_data.get("id") or not model_data.get("_id"):
+            model_data["id"] = str(uuid4())
 
-        model_id = getattr(model_data, "id")
-        self._storage[model_id] = model_data
-        return model_data
+        model_id = model_data["id"]
+        model = self.model_class(**model_data)
+        self._storage[model_id] = model
+        return model
 
     def update(self, model_id: Any, update_data: Dict[str, Any]) -> Optional[T]:
         """

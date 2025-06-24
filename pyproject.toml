@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{include = "modelrepo", from = "src"}] # Poetry will find the 'modelrepo' directory and its contents
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.12"
 sqlalchemy = "^2.0"
 pymongo = "^4.13"
 dependency-injector = "^4.48"

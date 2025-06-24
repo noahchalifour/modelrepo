@@ -1,8 +1,6 @@
-from dependency_injector.providers import Configuration
-import abc
 from typing import Callable, TypeVar, Generic, Optional, List, Dict, Any, Type
+import abc
 
-# Define a TypeVar for your models. This makes the ModelRepository generic.
 # T will represent the specific model class (e.g., User, Product, Order)
 T = TypeVar("T")
 
@@ -18,33 +16,6 @@ class ModelRepository(Generic[T], abc.ABC):
 
     def __init__(self, model_class: Type[T]) -> None:
         self.model_class = model_class
-
-    @classmethod
-    def get_repository_factory(cls, cfg: dict) -> Callable[[Any], "ModelRepository[T]"]:
-        """
-        Creates a factory function that instantiates repository instances for specific model classes.
-
-        This method allows for creating repositories with pre-configured settings from a configuration
-        dictionary. The returned factory function can be used to create repository instances for
-        different model types while maintaining the same repository configuration.
-
-        :param cfg: Configuration dictionary containing repository settings including 'class_path'
-                   which will be removed from the final configuration passed to the repository.
-        :return: A factory function that takes a model class and returns a repository instance
-                 configured for that model class.
-        """
-        repo_config = dict(cfg)
-        del repo_config["class_path"]
-
-        def _factory(model_class: Type[T]) -> ModelRepository[T]:
-            return cls(
-                **{
-                    "model_class": model_class,
-                    **repo_config,
-                }
-            )
-
-        return _factory
 
     @abc.abstractmethod
     def create(self, model_data: Dict[str, Any]) -> Optional[T]:

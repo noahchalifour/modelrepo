@@ -1,10 +1,8 @@
-from modelrepo.registry import registered_model
 from modelrepo.models.base import MongoDBModel
 
 from dataclasses import dataclass
 
 
-@registered_model
 @dataclass
 class User(MongoDBModel):
     name: str
