@@ -1,5 +1,5 @@
 default:
-  image: python:3.11 # Use a suitable Python version
+  image: python:3.12 # Use a suitable Python version
   before_script:
     - python --version
     - pip install poetry # Install Poetry in the CI environment
